@@ -9,8 +9,9 @@
 <body>
 <div id="app">
     <p m-text="11112"></p>
-    <p>111{{msg + '...'}}111{{msg}}</p>
+    <p>111{{ hello() }}111{{msg}}</p>
     <input type="text" %value="msg"/>
+    <button @click="alert(msg, 2)"> 111</button>
 </div>
 <script type="module" src="/src/main.ts"></script>
 </body>

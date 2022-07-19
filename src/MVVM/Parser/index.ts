@@ -1,9 +1,11 @@
 import MVVM from "../index";
 import Subscriber from "../Subscriber";
+
 export default class Parser {
     $frag: DocumentFragment
     $el: Element
     $context: MVVM
+
     constructor(context: MVVM) {
         // 保存上下文
         this.$context = context
@@ -14,21 +16,27 @@ export default class Parser {
         // 模版解析
         this.parse(this.$frag)
         // Document Fragment 添加回 DOM 中
-        this.$context.$el.appendChild(this.$frag)
+        this.$el.appendChild(this.$frag)
     }
+
     node2frag(node: Element): DocumentFragment {
         let frag = document.createDocumentFragment()
-        node.childNodes.forEach(child => {
-            if (child.nodeType === Node.TEXT_NODE && /^[\r\n]/.test(child.textContent!)) {
-                return
-            }
-            if (child.nodeType === Node.COMMENT_NODE) {
-                return
-            }
-            frag.appendChild(child)
-        })
+
+        if (node) {
+            node.childNodes.forEach(child => {
+                if (child.nodeType === Node.TEXT_NODE && /^[\r\n]/.test(child.textContent!)) {
+                    return
+                }
+                if (child.nodeType === Node.COMMENT_NODE) {
+                    return
+                }
+                frag.appendChild(child)
+            })
+        }
+
         return frag
     }
+
     parse(node: DocumentFragment | Element) {
         node.childNodes.forEach(child => {
             switch (child.nodeType) {
@@ -38,18 +46,17 @@ export default class Parser {
                 case Node.TEXT_NODE:
                     this.parseTextNode(child as Element)
                     break
-                default:
-                    return
             }
         })
     }
+
     parseElementNode(node: Element) {
-        // TODO: 指令解析
         const attrs = node.attributes
         for (let i = 0; i < attrs.length; i++) {
             const {name, value} = attrs[i]
             if (name.startsWith('m-')) {
                 const directive = name.slice(2)
+
                 if (directive.startsWith('text')) {
                     new Subscriber(value, this.$context, newValue => {
                         node.textContent = newValue
@@ -62,7 +69,6 @@ export default class Parser {
                 if (directive.startsWith('bind')) {
                     this.handleBind(node, directive, name, value)
                 }
-
             }
             if (name.startsWith(':')) {
                 const directive = name.replace(':', 'bind:')
@@ -72,10 +78,33 @@ export default class Parser {
                 const directive = name.replace('%', 'model:')
                 this.handleModel(node, directive, name, value)
             }
-            // TODO: 函数解析和事件解析
+            if (name.startsWith('@')) {
+                const directive = name.replace('@', '')
+
+                const pattern = /\((.*)\)/
+
+                const fn = value.split(pattern).shift()!
+
+                let args = value.match(pattern) ? value.match(pattern)![1].split(',') : null
+
+                if (args !== null) {
+                    args = args!.map(v => v.trim())
+
+                    node.addEventListener(directive, () => {
+                        this.$context.$methods[fn](...args!.map(v => {
+                            return new Function('context', `with(context) {return ${v}}`)(this.$context)
+                        }))
+                    })
+                } else {
+                    node.addEventListener(directive, () => {
+                        this.$context.$methods[fn].call(this.$context)
+                    })
+                }
+            }
         }
         this.parse(node)
     }
+
     parseTextNode(node: Element) {
         let text = node.textContent?.trim()
         if (text !== undefined) {
@@ -85,6 +114,7 @@ export default class Parser {
             })
         }
     }
+
     evaluateText(text: string): string {
         const pattern = /\{\{(.+?)}}/g
         let tokens = text.split(pattern)
@@ -98,6 +128,7 @@ export default class Parser {
         })
         return tokens.join('+')
     }
+
     handleModel(node: Element, directive: string, name: string, value: string) {
         const input = node as HTMLInputElement
         const attr = directive.split(':').pop()
@@ -120,6 +151,7 @@ export default class Parser {
         }
         node.removeAttribute(name)
     }
+
     handleBind(node: Element, directive: string, name: string, value: string) {
         const attr = directive.split(':').pop()
 

@@ -1,4 +1,4 @@
-import {Data, Methods, Options} from "./types";
+import {Data, Methods, Options} from "./Types";
 import Publisher from "./Publisher";
 import Parser from "./Parser";
 
@@ -6,6 +6,8 @@ export default class MVVM {
     public $el: Element
     public $data: Data
     public $methods: Methods
+    public $publisher: Publisher
+    public $parser: Parser
 
     constructor(options: Options) {
         // 获取DOM对象
@@ -19,15 +21,16 @@ export default class MVVM {
         // 方法代理
         this.proxyMethods(this.$methods)
         // 数据劫持
-        new Publisher(this.$data)
+        this.$publisher = new Publisher(this.$data)
         // 模版解析
-        new Parser(this)
+        this.$parser = new Parser(this)
     }
 
     proxyData(data: Data) {
         Object.keys(data).forEach(k => {
             Object.defineProperty(this, k, {
                 configurable: true,
+                enumerable: true,
                 set(v: any) {
                     data[k] = v
                 },
@@ -40,7 +43,9 @@ export default class MVVM {
 
     proxyMethods(methods: Methods) {
         Object.keys(methods).forEach(k => {
+            methods[k] = methods[k].bind(this)
             Object.defineProperty(this, k, {
+                enumerable: true,
                 get(): any {
                     return methods[k]
                 }
