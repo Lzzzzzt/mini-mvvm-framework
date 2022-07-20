@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/mini-mvvm-framework/assets/favicon.17e50649.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vite App</title>
+  <script type="module" crossorigin src="/mini-mvvm-framework/assets/index.6c2203cd.js"></script>
+  <link rel="stylesheet" href="/mini-mvvm-framework/assets/index.052efd07.css">
+</head>
+<body>
+<div id="app">
+    <div id="title" style="position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); font-size: 30px">{{title}}</div>
+    <div id="left">
+        <label>
+            <select m-model="selected" style="background-color: white">
+                <option :value="0">{{select[0]}}</option>
+                <option :value="1">{{select[1]}}</option>
+                <option :value="2">{{select[2]}}</option>
+                <option :value="3">{{select[3]}}</option>
+            </select>
+        </label>
+        <label><input type="text" m-model="input" id="input" style="background-color: white"></label>
+        <button @click="incr" id="button">INCR</button>
+    </div>
+    <div id="right">
+        <span class="show-value">{{select[selected]}}</span>
+        <span class="show-value">{{input}}</span>
+        <span class="show-value">{{num}}</span>
+    </div>
+</div>
+
+</body>
+</html>
