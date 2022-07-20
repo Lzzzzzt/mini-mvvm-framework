@@ -100,6 +100,7 @@ export default class Parser {
                         this.$context.$methods[fn].call(this.$context)
                     })
                 }
+                node.removeAttribute(name)
             }
         }
         this.parse(node)

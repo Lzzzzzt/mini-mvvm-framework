@@ -38,10 +38,10 @@ DA:47,4
 DA:50,4
 LF:18
 LH:18
-BRDA:18,0,0,6
-BRDA:18,0,1,0
+BRDA:18,0,0,5
+BRDA:18,0,1,1
 BRF:2
-BRH:1
+BRH:2
 end_of_record
 TN:
 SF:src/MVVM/Parser/index.ts

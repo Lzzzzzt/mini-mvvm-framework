@@ -15,7 +15,6 @@ test('Test MVVM (Data Proxy)', () => {
                 e: [1, 3]
             }
         },
-        methods: {}
     })
 
     // 测试 vm 中代理的数据是否和 vm.$data 中的是否相等
