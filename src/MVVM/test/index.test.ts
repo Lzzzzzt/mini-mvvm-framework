@@ -86,12 +86,12 @@ test('Test MVVM ($set Method)', () => {
             }
         }
     })
-
+    // 在 Array 上测试 $set 方法
     const array = document.getElementById('array')!
     expect(vm.$data.nums.toString()).toEqual(array.textContent)
     vm.$set(vm.$data.nums, vm.$data.nums.length, 5)
     expect([1, 2, 3, 4, 5].toString()).toEqual(array.textContent)
-
+    // 在 Object 上测试 $set 方法
     const obj = document.getElementById('object')!
     expect(vm.$data.obj.toString()).toEqual(obj.textContent)
     vm.$set(vm.$data.obj, 'c', 3)
@@ -117,11 +117,13 @@ test('Test MVVM ($del Method)', () => {
         }
     })
 
+    // 在 Array 上测试 $del 方法
     const array = document.getElementById('array')!
     expect(vm.$data.nums.toString()).toEqual(array.textContent)
     vm.$del(vm.$data.nums, vm.$data.nums.length - 1)
     expect([1, 2, 3].toString()).toEqual(array.textContent)
 
+    // 在 Object 上测试 $del 方法
     const obj = document.getElementById('object')!
     expect(vm.$data.obj.toString()).toEqual(obj.textContent)
     vm.$del(vm.$data.obj, 'b')
