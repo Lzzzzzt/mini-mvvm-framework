@@ -25,6 +25,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    transition: all ease 0.4s;
 }
 
 #right:hover, #left:hover {

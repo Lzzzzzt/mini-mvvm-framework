@@ -23,12 +23,12 @@ export default class MVVM {
         this.$data = options.data
         // 获取方法
         this.$methods = options.methods ? options.methods : {}
+        // 数据劫持
+        this.$publisher = new Publisher(this.$data)
         // 数据代理
         this.proxyData()
         // 方法代理
         this.proxyMethods()
-        // 数据劫持
-        this.$publisher = new Publisher(this.$data)
         // 模版解析
         this.$parser = new Parser(this)
     }
@@ -68,6 +68,29 @@ export default class MVVM {
                     return this.$methods[k]
                 }
             })
+        })
+    }
+
+    $set(data: any, key: string | number, value: any) {
+        data[key] = value
+        this.$publisher.reactive(data, key, value)
+        Object.keys(data.__parent__).forEach(key => {
+            if (data.__parent__[key] === data) {
+                data.__parent__[key] = data
+            }
+        })
+    }
+
+    $del(data: any, key: string | number) {
+        if (Array.isArray(data)) {
+            data.splice(key as number, 1)
+        } else {
+            data[key] = undefined
+        }
+        Object.keys(data.__parent__).forEach(key => {
+            if (data.__parent__[key] === data) {
+                data.__parent__[key] = data
+            }
         })
     }
 }

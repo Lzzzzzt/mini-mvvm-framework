@@ -68,6 +68,66 @@ test('Test MVVM (Function Proxy)', () => {
     }
 })
 
+test('Test MVVM ($set Method)', () => {
+    document.body.innerHTML = `
+        <div id="app">
+            <div id="array">{{nums}}</div>
+            <div id="object">{{obj}}</div>
+        </div>
+    `
+
+    const vm = new MVVM({
+        el: '#app',
+        data: {
+            nums: [1, 2, 3, 4],
+            obj: {
+                a: 1,
+                b: 2
+            }
+        }
+    })
+
+    const array = document.getElementById('array')!
+    expect(vm.$data.nums.toString()).toEqual(array.textContent)
+    vm.$set(vm.$data.nums, vm.$data.nums.length, 5)
+    expect([1, 2, 3, 4, 5].toString()).toEqual(array.textContent)
+
+    const obj = document.getElementById('object')!
+    expect(vm.$data.obj.toString()).toEqual(obj.textContent)
+    vm.$set(vm.$data.obj, 'c', 3)
+    expect({a: 1, b: 2, c: 3}.toString()).toEqual(obj.textContent)
+})
+
+test('Test MVVM ($del Method)', () => {
+    document.body.innerHTML = `
+        <div id="app">
+            <div id="array">{{nums}}</div>
+            <div id="object">{{obj}}</div>
+        </div>
+    `
+
+    const vm = new MVVM({
+        el: '#app',
+        data: {
+            nums: [1, 2, 3, 4],
+            obj: {
+                a: 1,
+                b: 2
+            }
+        }
+    })
+
+    const array = document.getElementById('array')!
+    expect(vm.$data.nums.toString()).toEqual(array.textContent)
+    vm.$del(vm.$data.nums, vm.$data.nums.length - 1)
+    expect([1, 2, 3].toString()).toEqual(array.textContent)
+
+    const obj = document.getElementById('object')!
+    expect(vm.$data.obj.toString()).toEqual(obj.textContent)
+    vm.$del(vm.$data.obj, 'b')
+    expect({a: 1}.toString()).toEqual(obj.textContent)
+})
+
 test('Test Parser (m-text directive and Mustache)', () => {
     document.body.innerHTML = `
     <div id="app">

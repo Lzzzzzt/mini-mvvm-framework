@@ -8,5 +8,7 @@ export interface Options {
     el: string
     data: Data
     methods?: Methods
-    [prop: string]: Data | Methods | any
 }
+
+export type SubscriberCallBack = (v: any) => void
+
