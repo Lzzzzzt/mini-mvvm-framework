@@ -31,15 +31,15 @@ new MVVM({
 + `index.html`
 ```Html 
 <div id="app">  
-    <div id="title">{{title}}</div>  
-		<select m-model="selected">  
-			<option :value="select[0]">{{select[0]}}</option>  
-			<option :value="select[1]">{{select[1]}}</option>  
-			<option :value="select[2]">{{select[2]}}</option>  
-			<option :value="select[3]">{{select[3]}}</option>  
-		</select>   
-        <div id="num">{{num}}</div>
-        <button @click="incr" id="button">INCR</button>  
+  <div id="title">{{title}}</div>  
+    <select m-model="selected">  
+      <option :value="select[0]">{{select[0]}}</option>  
+      <option :value="select[1]">{{select[1]}}</option>  
+      <option :value="select[2]">{{select[2]}}</option>  
+      <option :value="select[3]">{{select[3]}}</option>  
+    </select>   
+    <div id="num">{{num}}</div>
+    <button @click="incr" id="button">INCR</button>  
 </div>  
 ```
 + `main.ts`
@@ -67,7 +67,7 @@ new MVVM({
   + 是应用程序的根元素，后期生成的所有元素都是该元素的子节点
 + `<div id="title" ··· >{{title}}</div>`
   + 使用了双大括号模版语法(Mustache)，效果是将`MVVM`中`data`中的`title`的值转换成字符串然后替换掉`div`中的文本
-  + 双大括号模版语法还可以改成`m-text`指令，如`<div id="title" m-text="title" ··· />`效果是一样的
+  + 双大括号模版语法还可以改成`m-text`指令，如`<div id="title" m-text="title" ··· />`，效果是一样的
   + 双大括号模版语法只会将`{{···}}`替换成对应文本，其他不会改变
 + `<select m-model="selected"> ··· </select>`
   + `m-model`表示双向绑定指令，即data与其渲染的DOM元素的内容保持一致，`m-model`默认绑定的是`Html`元素的`value`属性，要更改的话，可以在`m-model`后添加冒号和要绑定的属性，或者使用简写语法`%`
@@ -93,19 +93,19 @@ new MVVM({
 + 回调函数可以是有参数的也可以时无参数的，有参数的需要使用小括号将参数包裹，就和调用`JavaScript/Typescript`函数一样
 ```html
 <div id="app">
-	<button @click="hello(name)" id="button">hello</button>
+  <button @click="hello(name)" id="button">hello</button>
 <div>
 <script>
-	new MVVM({  
-    el: '#app',  
-    data: {  
-        name: '小明'
-    },  
-    methods: {  
-        hello(n) {
-	        alert(n);
-        }
-    }  
+new MVVM({  
+  el: '#app',  
+  data: {  
+    name: '小明'
+  },  
+  methods: {  
+    hello(n) {
+      alert(n);
+    }
+  }  
 })
 </script>
 ```
