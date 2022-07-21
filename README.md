@@ -1,4 +1,5 @@
 # Mini MVVM Framework
+![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ## 简介
 这是一个简单的基于`TypeSript`编写的`MVVM`模式的`JavaScript/TypeScript`框架，实现了数据劫持、订阅发布模式、数据单/双向绑定，可以快速的使用事件监听器(`@`语法)
 ## 快速开始
