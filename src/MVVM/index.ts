@@ -72,25 +72,29 @@ export default class MVVM {
     }
 
     $set(data: any, key: string | number, value: any) {
-        data[key] = value
-        this.$publisher.reactive(data, key, value)
-        Object.keys(data.__parent__).forEach(key => {
-            if (data.__parent__[key] === data) {
-                data.__parent__[key] = data
-            }
-        })
+        if (typeof data === 'object') {
+            data[key] = value
+            this.$publisher.reactive(data, key, value)
+            Object.keys(data.__parent__).forEach(key => {
+                if (data.__parent__[key] === data) {
+                    data.__parent__[key] = data
+                }
+            })
+        }
     }
 
     $del(data: any, key: string | number) {
-        if (Array.isArray(data)) {
-            data.splice(key as number, 1)
-        } else {
-            data[key] = undefined
-        }
-        Object.keys(data.__parent__).forEach(key => {
-            if (data.__parent__[key] === data) {
-                data.__parent__[key] = data
+        if (typeof data === 'object') {
+            if (Array.isArray(data)) {
+                data.splice(key as number, 1)
+            } else {
+                data[key] = undefined
             }
-        })
+            Object.keys(data.__parent__).forEach(key => {
+                if (data.__parent__[key] === data) {
+                    data.__parent__[key] = data
+                }
+            })
+        }
     }
 }
