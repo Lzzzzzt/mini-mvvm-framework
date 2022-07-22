@@ -1,3 +1,11 @@
+# 结课作业提交仓库
+
++ 姓名：刘子滔
++ 学校：杭州电子科技大学
++ 专业：计算机科学与技术
++ 年级：大二
++ QQ：2426033506
+
 # Mini MVVM Framework
 ![coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 ## 简介
