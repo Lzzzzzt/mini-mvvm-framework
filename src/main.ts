@@ -7,7 +7,7 @@ new MVVM({
         num: 0,
         input: 'Hello, world!',
         select: ['Rust', 'Python', 'TypeScript', 'JavaScript'],
-        selected: 0,
+        selected: -1,
         title: 'Mini MVVM Framework Demo',
     },
     methods: {
